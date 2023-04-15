@@ -1,6 +1,5 @@
 ﻿//using Oracle.DataAccess.Client;
 //using Oracle.ManagedDataAccess.Client;
-using Oracle.ManagedDataAccess;
 using Oracle.ManagedDataAccess.Client;
 using Symulator;
 
@@ -34,11 +33,14 @@ class Program
                 case "marki":
                     Marki Marki = new Marki(_db, dodaj);
                     break;
+                case "sprzedawcy":
+                    Sprzedawcy sprzedawcy = new Sprzedawcy(_db, dodaj);
+                    break;
 
             }
         }
 
-        
+
 
     }
 }

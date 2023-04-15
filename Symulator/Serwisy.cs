@@ -45,7 +45,7 @@ namespace Symulator
             for (int i = 1; i <= rekordy; i++)
             {
                 int nextIdSerwisy = Convert.ToInt32(maxIdSerwisy) + i;
-                int nextIdAdresy = rnd.Next(1,Convert.ToInt32(maxIdAdresy));
+                int nextIdAdresy = rnd.Next(1, Convert.ToInt32(maxIdAdresy));
                 int randomNumerTelefonuu = rnd.Next(100000000, 999999999);
 
                 string query = "INSERT into serwisy (id_serwisu, adres, nr_telefonu, adresy_id_adresu) VALUES (" + nextIdSerwisy + "," + nextIdAdresy + "," + randomNumerTelefonuu + "," + nextIdAdresy + ")";
