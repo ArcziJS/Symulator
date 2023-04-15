@@ -4,6 +4,8 @@ namespace Symulator
 {
     internal class Adresy
     {
+        Miasta Miasto = new Miasta();
+        Ulice Ulica = new Ulice();
         public Adresy(int rekordy)
         {
             Console.WriteLine("Connecting to db...");
@@ -50,8 +52,8 @@ namespace Symulator
             for (int i = 0; i < rekordy; i++)
             {
                 int nextIdAdresy = Convert.ToInt32(maxIdAdresy) + i;
-                string randomMiasto;
-                string randomUlica;
+                string randomMiasto = Miasto.WybierzMiasto();
+                string randomUlica = Ulica.WybierzUlice();
                 int randomNumerDomu = rnd.Next(1, 999);
                 int randomNumerMieszkania = rnd.Next(1, 99);
                 string randomKodPocztowy = rnd.Next(10, 99) + "-" + rnd.Next(100, 999);
