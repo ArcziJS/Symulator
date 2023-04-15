@@ -6,25 +6,20 @@ namespace Symulator
     {
         Miasta Miasto = new Miasta();
         Ulice Ulica = new Ulice();
-        public Adresy(int rekordy)
+        public Adresy(OracleConnection connection, int rekordy)
         {
-            Console.WriteLine("Connecting to db...");
-            string connectionString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=217.173.198.135)(PORT=1521)))(CONNECT_DATA=(Service_name=tpdb)));User ID=s101700;Password=s101700;";
-            OracleConnection connection = new OracleConnection(connectionString);
-            connection.Open();
-            Console.WriteLine("Connected!");
 
             #region Adresy
 
             string idAdresy = "select max(id_adresu) from adresy";
-            string maxIdAdresy = "";
+            int maxIdAdresy = 0;
             OracleCommand GetMaxIdAdresy = connection.CreateCommand();
             GetMaxIdAdresy.CommandText = idAdresy;
 
             OracleDataReader readerAdresy = GetMaxIdAdresy.ExecuteReader();
             while (readerAdresy.Read())
             {
-                maxIdAdresy = readerAdresy[0].ToString();
+                maxIdAdresy = Convert.ToInt32(readerAdresy[0]);
             }
             readerAdresy.Close();
 
@@ -49,9 +44,9 @@ namespace Symulator
             Console.WriteLine("Dodawanie rekordów:");
 
             Random rnd = new Random();
-            for (int i = 0; i < rekordy; i++)
+            for (int i = 1; i <= rekordy; i++)
             {
-                int nextIdAdresy = Convert.ToInt32(maxIdAdresy) + i;
+                int nextIdAdresy = maxIdAdresy + i;
                 string randomMiasto = Miasto.WybierzMiasto();
                 string randomUlica = Ulica.WybierzUlice();
                 int randomNumerDomu = rnd.Next(1, 999);
@@ -59,12 +54,18 @@ namespace Symulator
                 string randomKodPocztowy = rnd.Next(10, 99) + "-" + rnd.Next(100, 999);
                 int randomIdKomisy = rnd.Next(1, Convert.ToInt32(maxIdKomisy) + 1);
 
-                string query = "INSERT into Adresy (id_adresu, miasto, ulica, nr_domu, nr_mieszkania, kod_pocztowy, komisy_id_komisu) Values (" + nextIdAdresy + "," + randomMiasto + ", " + randomUlica + ", " + randomNumerDomu + ", " + randomNumerMieszkania + "," + randomKodPocztowy + "," + randomIdKomisy + ");";
+                string query = "INSERT into Adresy (id_adresu, miasto, ulica, nr_domu, nr_mieszkania, kod_pocztowy, komisy_id_komisu) Values (" + nextIdAdresy + ",:randomMiasto, :randomUlica, " + randomNumerDomu + ", " + randomNumerMieszkania + ",:randomKodPocztowy," + randomIdKomisy + ")";
 
-                OracleCommand AddAdresy = connection.CreateCommand();
-                AddAdresy.CommandText = query;
-                AddAdresy.ExecuteNonQuery();
-                Console.WriteLine("Dodano rekord.");
+                using (OracleCommand AddAdresy = connection.CreateCommand())
+                {
+                    AddAdresy.CommandText = query;
+                    AddAdresy.Parameters.Add("randomMiasto", randomMiasto);
+                    AddAdresy.Parameters.Add("randomUlica", randomUlica);
+                    AddAdresy.Parameters.Add("randomKodPocztowy", randomKodPocztowy);
+                    AddAdresy.ExecuteNonQuery();
+                    Console.WriteLine("Dodano rekord.");
+                }
+
             }
             connection.Close();
         }

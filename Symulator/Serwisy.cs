@@ -4,13 +4,8 @@ namespace Symulator
 {
     internal class Serwisy
     {
-        public Serwisy(int rekordy)
+        public Serwisy(OracleConnection connection, int rekordy)
         {
-            Console.WriteLine("Connecting to db...");
-            string connectionString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=217.173.198.135)(PORT=1521)))(CONNECT_DATA=(Service_name=tpdb)));User ID=s101700;Password=s101700;";
-            OracleConnection connection = new OracleConnection(connectionString);
-            connection.Open();
-            Console.WriteLine("Connected!");
 
             #region Serwisy
 
@@ -47,13 +42,13 @@ namespace Symulator
             Console.WriteLine("Dodawanie rekordów:");
 
             Random rnd = new Random();
-            for (int i = 0; i < rekordy; i++)
+            for (int i = 1; i <= rekordy; i++)
             {
-                int nextIdSerwisy = Convert.ToInt32(maxIdSerwisy) + ++i;
-                int nextIdAdresy = rnd.Next(Convert.ToInt32(maxIdAdresy) + i, Convert.ToInt32(maxIdAdresy) + rekordy);
-                int randomNumerTelefonuu = rnd.Next(1000000000, 999999999);
+                int nextIdSerwisy = Convert.ToInt32(maxIdSerwisy) + i;
+                int nextIdAdresy = rnd.Next(1,Convert.ToInt32(maxIdAdresy));
+                int randomNumerTelefonuu = rnd.Next(100000000, 999999999);
 
-                string query = "INSERT into serwisy (id_serwisu, adres, nr_telefonu, Serwisy_id_adresu) VALUES ("+nextIdSerwisy+","+nextIdAdresy+","+randomNumerTelefonuu+ ","+nextIdAdresy+");";
+                string query = "INSERT into serwisy (id_serwisu, adres, nr_telefonu, adresy_id_adresu) VALUES (" + nextIdSerwisy + "," + nextIdAdresy + "," + randomNumerTelefonuu + "," + nextIdAdresy + ")";
 
                 OracleCommand AddSerwisy = connection.CreateCommand();
                 AddSerwisy.CommandText = query;

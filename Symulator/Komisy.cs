@@ -4,29 +4,20 @@ namespace Symulator
 {
     internal class Komisy
     {
-        public Komisy(int rekordy)
+        public Komisy(OracleConnection connection, int rekordy)
         {
-            Console.WriteLine("Connecting to db...");
-            string connectionString = "Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=217.173.198.135)(PORT=1521)))(CONNECT_DATA=(Service_name=tpdb)));User ID=s101700;Password=s101700;";
-            OracleConnection connection = new OracleConnection(connectionString);
-            connection.Open();
-            Console.WriteLine("Connected!");
-
-
-
-
 
             #region Komisy
 
             string idKomisy = "select max(id_komisu) from komisy";
-            string maxIdKomisy = "";
+            int maxIdKomisy = 1;
             OracleCommand GetMaxIdKomisy = connection.CreateCommand();
             GetMaxIdKomisy.CommandText = idKomisy;
 
             OracleDataReader readerKomisy = GetMaxIdKomisy.ExecuteReader();
             while (readerKomisy.Read())
             {
-                maxIdKomisy = readerKomisy[0].ToString();
+                maxIdKomisy = Convert.ToInt32(readerKomisy[0]);
             }
             readerKomisy.Close();
 
@@ -82,14 +73,14 @@ namespace Symulator
             Console.WriteLine("Dodawanie rekordów:");
 
             Random rnd = new Random();
-            for (int i = 0; i < rekordy; i++)
+            for (int i = 1; i <= rekordy; i++)
             {
-                int randomIdKomisy = rnd.Next(Convert.ToInt32(maxIdKomisy) + 1, Convert.ToInt32(maxIdKomisy) + rekordy);
+                int nextIdKomisy = maxIdKomisy + i;
                 int randomIdSprzedawcy = rnd.Next(1, Convert.ToInt32(maxIdSprzedawcy) + 1);
                 int randomIdPojazdy = rnd.Next(1, Convert.ToInt32(maxIdPojazdy) + 1);
                 int randomIdAdresy = rnd.Next(1, Convert.ToInt32(maxIdAdresy) + 1);
 
-                string query = "INSERT into Komisy (id_komisu, sprzedawcy, pojazdy, adres) Values (" + randomIdKomisy + "," + randomIdSprzedawcy + "," + randomIdPojazdy + "," + randomIdAdresy + ");";
+                string query = "INSERT into Komisy (id_komisu, sprzedawcy, pojazdy, adres) Values (" + nextIdKomisy + "," + randomIdSprzedawcy + "," + randomIdPojazdy + "," + randomIdAdresy + ")";
 
                 OracleCommand AddKomisy = connection.CreateCommand();
                 AddKomisy.CommandText = query;
