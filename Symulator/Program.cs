@@ -34,7 +34,7 @@ class Program
                     Marki Marki = new Marki(_db, dodaj);
                     break;
                 case "sprzedawcy":
-                    Sprzedawcy sprzedawcy = new Sprzedawcy(_db, dodaj);
+                    Sprzedawcy Sprzedawcy = new Sprzedawcy(_db, dodaj);
                     break;
 
             }

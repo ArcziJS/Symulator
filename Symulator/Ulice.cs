@@ -2,7 +2,14 @@
 {
     internal class Ulice
     {
-        string[] ulice = { "Asfaltowa", "Kwiatowa", "Lipowa", "Brzozowa", "Ta", "Tamta", "Dziurawa" };
+        string[] ulice = 
+            { 
+                "Nowy Świat", "Marszałkowska", "Chmielna", "Kościuszki", "Piłsudskiego", "Piotrkowska", "Grunwaldzka",
+                "Długa", "Świętokrzyska", "Monte Cassino", "Floriańska", "Aleja Niepodległości", "Krakowskie Przedmieście",
+                "Batorego", "Kazimierza Wielkiego", "Wita Stwosza", "Jana Pawła II", "Stary Rynek", "Chopina", "Mickiewicza" 
+            };
+
+
 
         public string WybierzUlice()
         {

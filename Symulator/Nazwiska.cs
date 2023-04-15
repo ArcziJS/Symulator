@@ -13,5 +13,10 @@
                 "Wilk", "Witek", "Włodarczyk", "Wojtas", "Woźniak", "Wrona", "Zając", "Zalewski", "Zawadzki","Zieliński", "Żukowski"
         };
 
+        public string WybierzNazwisko()
+        {
+            Random random = new Random();
+            return nazwiska[random.Next(nazwiska.Length)];
+        }
     }
 }
