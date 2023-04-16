@@ -13,16 +13,16 @@ namespace Symulator.Inserters
 
             Console.WriteLine("Dodawanie rekordów:");
 
-            Random rnd = new Random();
+            Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
                 int nextIdKlienci = maxIdKlienci + i;
                 string randomImie = GeneratorImion.WybierzImie();
                 string randomNazwisko = GeneratorNazwisk.WybierzNazwisko();
-                int randomNumerTelefonu = rnd.Next(100000000, 999999999);
-                string randomPESEL = rnd.Next(100000, 999999).ToString() + rnd.Next(10000, 99999).ToString();
+                int randomNumerTelefonu = random.Next(100000000, 999999999);
+                string randomPESEL = GeneratorPESEL.WygenerujPESEL();
                 string randomEmail = randomImie.ToLower() + "." + randomNazwisko + GeneratorDomenEmail.GenerujDomene();
-                int IdAdresy = rnd.Next(1, Convert.ToInt32(maxIdAdresy) + 1);
+                int IdAdresy = random.Next(1, maxIdAdresy + 1);
 
                 string query = "INSERT into Klienci " +
                     "(id_klienta, imie, nazwisko, nr_telefonu, PESEL, email, adres, adresy_id_adresu)" +

@@ -15,8 +15,8 @@ namespace Symulator.Inserters
             Random rnd = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
-                int nextIdSerwisy = Convert.ToInt32(maxIdSerwisy) + i;
-                int nextIdAdresy = rnd.Next(1, Convert.ToInt32(maxIdAdresy));
+                int nextIdSerwisy = maxIdSerwisy + i;
+                int nextIdAdresy = rnd.Next(1, maxIdAdresy + 1);
                 int randomNumerTelefonu = rnd.Next(100000000, 999999999);
 
                 string query = "INSERT into serwisy " +

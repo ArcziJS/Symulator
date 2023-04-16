@@ -8,7 +8,11 @@ namespace Symulator.Generators
 {
     internal class GeneratorWyposazenia
     {
-        string[] wyposazenie =
+        
+
+        public static string WybierzElementWyposazenia()
+        {
+            string[] wyposazenie =
             {
                 "klimatyzacja", "radio", "nawigacja", "tempomat", "skórzana tapicerka", "podgrzewane fotele",
                 "elektrycznie sterowane szyby", "elektrycznie sterowane lusterka", "centralny zamek", "alarm",
@@ -16,9 +20,6 @@ namespace Symulator.Generators
                 "start-stop", "monitorowanie martwego pola", "rozpoznawanie znaków drogowych", "automatyczne parkowanie",
                 "rozpoznawanie pieszych", "skórzana kierownica", "wyświetlacz Head-Up", "podgrzewana przednia szyba"
             };
-
-        public string WybierzElementWyposazenia()
-        {
             Random random = new Random();
             return wyposazenie[random.Next(wyposazenie.Length)];
         }

@@ -16,17 +16,17 @@ namespace Symulator.Inserters
 
             Console.WriteLine("Dodawanie rekordów:");
 
-            Random rnd = new Random();
+            Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
                 PojazdyArchiwum PojazdyArchiwum = new PojazdyArchiwum(1);
 
                 int nextIdUmowy = maxIdUmowy + i;
-                int randomSprzedawca = rnd.Next(1, maxIdSprzedawcy + 1);
-                int randomKlient = rnd.Next(1, maxIdKlienci + 1);
+                int randomSprzedawca = random.Next(1, maxIdSprzedawcy + 1);
+                int randomKlient = random.Next(1, maxIdKlienci + 1);
                 int randomPojazd = maxIdPojazdy + 1;
                 DateTime dateTime = DateTime.Now;
-                int randomIdKomisy = rnd.Next(1, maxIdKomisy + 1);
+                int randomIdKomisy = random.Next(1, maxIdKomisy + 1);
 
 
 

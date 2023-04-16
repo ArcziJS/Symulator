@@ -14,13 +14,13 @@ namespace Symulator.Inserters
 
             Console.WriteLine("Dodawanie rekordów:");
 
-            Random rnd = new Random();
+            Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
                 int nextIdKomisy = maxIdKomisy + i;
-                int randomIdSprzedawcy = rnd.Next(1, Convert.ToInt32(maxIdSprzedawcy) + 1);
-                int randomIdPojazdy = rnd.Next(1, maxIdPojazdy + 1);
-                int randomIdAdresy = rnd.Next(1, Convert.ToInt32(maxIdAdresy) + 1);
+                int randomIdSprzedawcy = random.Next(1, maxIdSprzedawcy + 1);
+                int randomIdPojazdy = random.Next(1, maxIdPojazdy + 1);
+                int randomIdAdresy = random.Next(1, maxIdAdresy + 1);
 
                 string query = "INSERT into Komisy (id_komisu, sprzedawcy, pojazdy, adres) Values (" + nextIdKomisy + "," + randomIdSprzedawcy + "," + randomIdPojazdy + "," + randomIdAdresy + ")";
 

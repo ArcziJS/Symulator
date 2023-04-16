@@ -6,7 +6,6 @@ namespace Symulator.Inserters
 {
     internal class Wyposazenie : OracleDBConnector
     {
-        GeneratorWyposazenia ElementyWyposazenia = new GeneratorWyposazenia();
         public Wyposazenie(int rekordy)
         {
             int maxIdWyposazenie = MaxIdWyposazenie.GetMaxIdWyposazenie();
@@ -16,7 +15,7 @@ namespace Symulator.Inserters
             for (int i = 1; i <= rekordy; i++)
             {
                 int nextIdWyposazenie = maxIdWyposazenie + i;
-                string randomWyposazenie = ElementyWyposazenia.WybierzElementWyposazenia();
+                string randomWyposazenie = GeneratorWyposazenia.WybierzElementWyposazenia();
 
                 string query = "INSERT into Wyposazenie (id_wyposazenia, element) Values(" + nextIdWyposazenie + ", :element)";
 
