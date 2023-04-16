@@ -1,8 +1,16 @@
-﻿namespace Symulator
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Symulator.Generators
 {
-    internal class Modele
-    {
-        string[] modele =
+    internal class GeneratorModeli
+    {     
+        public static string WybierzModel()
+        {
+            string[] modele =
             {
                 "Golf", "Passat", "Polo", "Jetta", "Beetle", "Touareg", "Tiguan", "Transporter", "Civic", "Accord", "CR-V",
                 "HR-V", "Civic Type R", "Focus", "Mondeo", "Fiesta", "Mustang", "Escape", "Explorer", "F-150", "C-Class",
@@ -11,12 +19,8 @@
                 "Silverado", "Challenger", "Charger", "Durango", "Wrangler", "Grand Cherokee", "Cherokee", "Compass",
                 "Renegade", "Model 3", "Model S", "Model X", "Model Y"
             };
-
-        public string WybierzModel()
-        {
             Random random = new Random();
             return modele[random.Next(modele.Length)];
         }
-
     }
 }

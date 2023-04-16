@@ -1,8 +1,16 @@
-﻿namespace Symulator
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Symulator.Generators
 {
-    internal class Imiona
+    internal class GeneratorImion
     {
-        string[] imiona =
+        public static string WybierzImie()
+        {
+            string[] imiona =
             {
                 "Adam", "Aleksander", "Aleksandra", "Alicja", "Amelia", "Andrzej", "Anna", "Antoni", "Agnieszka", "Barbara",
                 "Bartosz", "Beata", "Bernadetta", "Bolesław", "Cezary", "Dagmara", "Damian", "Daniel", "Dariusz", "Dominika",
@@ -14,10 +22,6 @@
                 "Robert", "Radosław", "Rafał", "Szymon", "Stanisław", "Stefan", "Tadeusz", "Tomasz", "Teresa", "Urszula",
                 "Weronika", "Wiktoria", "Wiesław", "Wiktor", "Wioletta", "Władysław", "Zbigniew", "Zdzisław", "Zofia","Zuzanna"
             };
-
-
-        public string WybierzImie()
-        {
             Random random = new Random();
             return imiona[random.Next(imiona.Length)];
         }
