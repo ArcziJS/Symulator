@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Oracle.ManagedDataAccess.Client;
+﻿using Oracle.ManagedDataAccess.Client;
 using Symulator.Generators;
 using Symulator.Selectors;
 
@@ -14,13 +13,15 @@ namespace Symulator.Inserters
             int maxIdMarki = MaxIdMarki.GetMaxIdMarki();
             int maxIdWyposazenie = MaxIdWyposazenie.GetMaxIdWyposazenie();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie Pojazdów:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
                 int nextIdPojazdy = maxIdPojazdy + i;
-                int randomMarka = random.Next(1, maxIdMarki);
+                string randomMarka = GeneratorMarek.WybierzMarke();
                 string randomModel = GeneratorModeli.WybierzModel();
                 string randomKolor = GeneratorKolorow.WybierzKolor();
                 int randomRokProdukcji = random.Next(2000, 2023);
@@ -36,20 +37,34 @@ namespace Symulator.Inserters
                 string query = "INSERT into Pojazdy " +
                     "(id_pojazdu, marka, model, kolor, rok_produkcji, VIN, przebieg, wyposazenie, pojemnosc, km, nm, marki_id_marki, komisy_id_komisu)" +
                     "Values" +
-                    "(" + nextIdPojazdy + ", " + randomMarka + ", :randomModel, :randomKolor," + randomRokProdukcji + ", :randomVIN, " + randomPrzebieg + "," + randomWyposazenie + ", " + randomPojemnosc + ", " + randomKonieMechaniczne + ", " + randomMomentObrotowy + ", " + randomIdMarki + ", " + randomIdKomisy + ")";
+                    "(" + nextIdPojazdy + ", :randomMarka , :randomModel, :randomKolor," + randomRokProdukcji + ", :randomVIN, " + randomPrzebieg + "," + randomWyposazenie + ", " + randomPojemnosc + ", " + randomKonieMechaniczne + ", " + randomMomentObrotowy + ", " + randomIdMarki + ", " + randomIdKomisy + ")";
 
                 using (OracleCommand AddPojazdy = GetConnection().CreateCommand())
                 {
                     AddPojazdy.CommandText = query;
-                    //AddPojazdy.Parameters.Add("randomMarka", randomMarka);
-                    AddPojazdy.Parameters.Add("randomModel", randomModel);
-                    AddPojazdy.Parameters.Add("randomKolor", randomKolor);
-                    AddPojazdy.Parameters.Add("randomVIN", randomVIN);
+                    AddPojazdy.Parameters.Add(":randomMarka", randomMarka);
+                    AddPojazdy.Parameters.Add(":randomModel", randomModel);
+                    AddPojazdy.Parameters.Add(":randomKolor", randomKolor);
+                    AddPojazdy.Parameters.Add(":randomVIN", randomVIN);
                     AddPojazdy.ExecuteNonQuery();
-                    Console.WriteLine("Dodano rekord.");
-                }
 
+                    string executedQuery = AddPojazdy.CommandText;
+                    foreach (OracleParameter param in AddPojazdy.Parameters)
+                    {
+                        executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                    }
+                    executedQuery += ";";
+
+
+                    using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddPojazdy.txt"), true))
+                    {
+                        outputFile.WriteLine(executedQuery);
+                    }
+                }
             }
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" Pojazdów.\n");
         }
     }
 }

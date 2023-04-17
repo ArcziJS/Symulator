@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Symulator.Generators
+﻿namespace Symulator.Generators
 {
     internal class GeneratorModeli
-    {     
+    {
         public static string WybierzModel()
         {
             string[] modele =

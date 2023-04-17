@@ -10,7 +10,9 @@ namespace Symulator.Inserters
             int maxIdSerwisy = MaxIdSerwisy.GetMaxIdSerwisy();
             int maxIdAdresy = MaxIdAdresy.GetMaxIdAdresy();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie Serwisów:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Random rnd = new Random();
             for (int i = 1; i <= rekordy; i++)
@@ -27,8 +29,24 @@ namespace Symulator.Inserters
                 OracleCommand AddSerwisy = GetConnection().CreateCommand();
                 AddSerwisy.CommandText = query;
                 AddSerwisy.ExecuteNonQuery();
-                Console.WriteLine("Dodano rekord.");
+
+                string executedQuery = AddSerwisy.CommandText;
+                foreach (OracleParameter param in AddSerwisy.Parameters)
+                {
+                    executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                }
+                executedQuery += ";";
+
+
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddSerwisy.txt"), true))
+                {
+                    outputFile.WriteLine(executedQuery);
+                }
             }
+
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" Serwisów.\n");
         }
     }
 }

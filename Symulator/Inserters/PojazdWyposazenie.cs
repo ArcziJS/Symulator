@@ -11,12 +11,15 @@ namespace Symulator.Inserters
             int maxIdWyposazenie = MaxIdWyposazenie.GetMaxIdWyposazenie();
             int maxIdPojazdy = MaxIdPojazdy.GetMaxIdPojazdy();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie pojazd-wyposazenie:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
             Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
                 int randomIdWyposazenie = random.Next(1, maxIdWyposazenie + 1);
-                int randomIdPojazdu = random.Next(maxIdPojazdy + 1, maxIdPojazdy + i);
+                int randomIdPojazdu = random.Next(1, maxIdPojazdy + 1);
 
                 string query = "INSERT into \"pojazd-wyposazenie\" " +
                     "(pojazdy_id_pojazdu, wyposazenie_id_wyposazenia)" +
@@ -26,8 +29,24 @@ namespace Symulator.Inserters
                 OracleCommand AddWyposazenie = GetConnection().CreateCommand();
                 AddWyposazenie.CommandText = query;
                 AddWyposazenie.ExecuteNonQuery();
-                Console.WriteLine("Dodano rekord.");
+
+                string executedQuery = AddWyposazenie.CommandText;
+                foreach (OracleParameter param in AddWyposazenie.Parameters)
+                {
+                    executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                }
+                executedQuery += ";";
+
+
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddPojazdWyposazenie.txt"), true))
+                {
+                    outputFile.WriteLine(executedQuery);
+                }
             }
+
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" pojazd-wyposazenie.\n");
         }
     }
 }

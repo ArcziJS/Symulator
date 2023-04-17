@@ -11,7 +11,9 @@ namespace Symulator.Inserters
             int maxIdSprzedawcy = MaxIdSprzedawcy.GetMaxIdSprzedawcy();
             int maxIdKomisy = MaxIdKomisy.GetMaxIdKomisy();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie Sprzedawców:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
@@ -22,19 +24,36 @@ namespace Symulator.Inserters
                 string randomPESEL = GeneratorPESEL.WygenerujPESEL();
                 int randomIdKomisy = random.Next(1, maxIdKomisy + 1);
 
-                string query = "INSERT into Sprzedawcy (id_sprzedawcy, imie, nazwisko, PESEL, komisy_id_komisu)Values(" + nextIdSprzedawcy + ", :randomImie, :randomNazwisko, :randomPESEL ," + randomIdKomisy + ")";
+                string query = "INSERT into Sprzedawcy " +
+                    "(id_sprzedawcy, imie, nazwisko, PESEL, komisy_id_komisu)" +
+                    "Values" +
+                    "(" + nextIdSprzedawcy + ", :randomImie, :randomNazwisko, :randomPESEL ," + randomIdKomisy + ")";
 
                 using (OracleCommand AddSprzedawcy = GetConnection().CreateCommand())
                 {
                     AddSprzedawcy.CommandText = query;
-                    AddSprzedawcy.Parameters.Add("randomImie", randomImie);
-                    AddSprzedawcy.Parameters.Add("randomNazwisko", randomNazwisko);
-                    AddSprzedawcy.Parameters.Add("randomPESEL", randomPESEL);
+                    AddSprzedawcy.Parameters.Add(":randomImie", randomImie);
+                    AddSprzedawcy.Parameters.Add(":randomNazwisko", randomNazwisko);
+                    AddSprzedawcy.Parameters.Add(":randomPESEL", randomPESEL);
                     AddSprzedawcy.ExecuteNonQuery();
-                    Console.WriteLine("Dodano rekord.");
-                }
 
+                    string executedQuery = AddSprzedawcy.CommandText;
+                    foreach (OracleParameter param in AddSprzedawcy.Parameters)
+                    {
+                        executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                    }
+                    executedQuery += ";";
+
+
+                    using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddSprzedawcy.txt"), true))
+                    {
+                        outputFile.WriteLine(executedQuery);
+                    }
+                }
             }
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" Sprzedawców.\n");
         }
     }
 }

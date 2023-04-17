@@ -1,6 +1,5 @@
 ﻿//using Oracle.DataAccess.Client;
 //using Oracle.ManagedDataAccess.Client;
-using Oracle.ManagedDataAccess.Client;
 using Symulator;
 using Symulator.Inserters;
 
@@ -15,9 +14,9 @@ class Program : OracleDBConnector
         GetConnection().Close();
     }
 
-        static void Wybierajka()
-        {
-        Console.WriteLine("\nPodaj nazwę tabeli: ");
+    static void Wybierajka()
+    {
+        Console.WriteLine("\n\nPodaj nazwę tabeli: ");
         string tabela = Console.ReadLine().ToString();
         Console.WriteLine("Ile rekordów chcesz dodać?");
         int dodaj = int.Parse(Console.ReadLine());
@@ -66,6 +65,20 @@ class Program : OracleDBConnector
                 break;
             case "pojazd-wyposazenie":
                 PojazdWyposazenie PojazdWyposazenie = new PojazdWyposazenie(dodaj);
+                Wybierajka();
+                break;
+            case "wszystkie":
+                Komisy WszystkieKomisy = new Komisy(dodaj);
+                Adresy WszystkieAdresy = new Adresy(dodaj);
+                Serwisy WszystkieSerwisy = new Serwisy(dodaj);
+                Marki WszystkieMarki = new Marki(dodaj);
+                Sprzedawcy WszystkieSprzedawcy = new Sprzedawcy(dodaj);
+                Pojazdy WszystkiePojazdy = new Pojazdy(dodaj);
+                Wyposazenie WszystkieWyposazenie = new Wyposazenie(dodaj);
+                Klienci WszystkieKlienci = new Klienci(dodaj);
+                Umowy WszystkieUmowy = new Umowy(dodaj);
+                PojazdyArchiwum WszystkiePojazdyArchiwum = new PojazdyArchiwum(dodaj);
+                PojazdWyposazenie WszystkiePojazdWyposazenie = new PojazdWyposazenie(dodaj);
                 Wybierajka();
                 break;
             default:

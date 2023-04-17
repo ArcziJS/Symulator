@@ -1,5 +1,4 @@
 ﻿using Oracle.ManagedDataAccess.Client;
-using Oracle.ManagedDataAccess.Types;
 using Symulator.Selectors;
 
 namespace Symulator.Inserters
@@ -14,18 +13,18 @@ namespace Symulator.Inserters
             int maxIdPojazdy = MaxIdPojazdy.GetMaxIdPojazdy();
             int maxIdKomisy = MaxIdKomisy.GetMaxIdKomisy();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie Umów:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
             {
-                PojazdyArchiwum PojazdyArchiwum = new PojazdyArchiwum(1);
-
                 int nextIdUmowy = maxIdUmowy + i;
                 int randomSprzedawca = random.Next(1, maxIdSprzedawcy + 1);
                 int randomKlient = random.Next(1, maxIdKlienci + 1);
                 int randomPojazd = maxIdPojazdy + 1;
-                DateTime dateTime = DateTime.Now;
+                DateTime dateTime = DateTime.Today;
                 int randomIdKomisy = random.Next(1, maxIdKomisy + 1);
 
 
@@ -38,12 +37,26 @@ namespace Symulator.Inserters
                 using (OracleCommand AddUmowy = GetConnection().CreateCommand())
                 {
                     AddUmowy.CommandText = query;
-                    AddUmowy.Parameters.Add("data", dateTime);
+                    AddUmowy.Parameters.Add(":data", dateTime);
                     AddUmowy.ExecuteNonQuery();
-                    Console.WriteLine("Dodano rekord.");
-                }
 
+                    string executedQuery = AddUmowy.CommandText;
+                    foreach (OracleParameter param in AddUmowy.Parameters)
+                    {
+                        executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                    }
+                    executedQuery += ";";
+
+
+                    using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddUmowy.txt"), true))
+                    {
+                        outputFile.WriteLine(executedQuery);
+                    }
+                }
             }
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" Umów.\n");
         }
     }
 }

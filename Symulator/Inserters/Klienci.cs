@@ -11,7 +11,9 @@ namespace Symulator.Inserters
             int maxIdKlienci = MaxIdKlienci.GetMaxIdKlienci();
             int maxIdAdresy = MaxIdAdresy.GetMaxIdAdresy();
 
-            Console.WriteLine("Dodawanie rekordów:");
+            Console.WriteLine("\nDodawanie Klientów:");
+
+            string docPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
             Random random = new Random();
             for (int i = 1; i <= rekordy; i++)
@@ -21,7 +23,7 @@ namespace Symulator.Inserters
                 string randomNazwisko = GeneratorNazwisk.WybierzNazwisko();
                 int randomNumerTelefonu = random.Next(100000000, 999999999);
                 string randomPESEL = GeneratorPESEL.WygenerujPESEL();
-                string randomEmail = randomImie.ToLower() + "." + randomNazwisko + GeneratorDomenEmail.GenerujDomene();
+                string randomEmail = randomImie.ToLower() + "." + randomNazwisko.ToLower() + GeneratorDomenEmail.GenerujDomene();
                 int IdAdresy = random.Next(1, maxIdAdresy + 1);
 
                 string query = "INSERT into Klienci " +
@@ -32,15 +34,29 @@ namespace Symulator.Inserters
                 using (OracleCommand AddKlienci = GetConnection().CreateCommand())
                 {
                     AddKlienci.CommandText = query;
-                    AddKlienci.Parameters.Add("randomImie", randomImie);
-                    AddKlienci.Parameters.Add("randomNazwisko", randomNazwisko);
-                    AddKlienci.Parameters.Add("randomPESEL", randomPESEL);
-                    AddKlienci.Parameters.Add("email", randomEmail);
+                    AddKlienci.Parameters.Add(":randomImie", randomImie);
+                    AddKlienci.Parameters.Add(":randomNazwisko", randomNazwisko);
+                    AddKlienci.Parameters.Add(":randomPESEL", randomPESEL);
+                    AddKlienci.Parameters.Add(":email", randomEmail);
                     AddKlienci.ExecuteNonQuery();
-                    Console.WriteLine("Dodano rekord.");
-                }
 
+                    string executedQuery = AddKlienci.CommandText;
+                    foreach (OracleParameter param in AddKlienci.Parameters)
+                    {
+                        executedQuery = executedQuery.Replace(param.ParameterName, $"'{param.Value}'");
+                    }
+                    executedQuery += ";";
+
+
+                    using (StreamWriter outputFile = new StreamWriter(Path.Combine(docPath, "AddKlienci.txt"), true))
+                    {
+                        outputFile.WriteLine(executedQuery);
+                    }
+                }
             }
+            Console.Write("Dodano ");
+            Console.Write(rekordy);
+            Console.Write(" Klientów.\n");
         }
     }
 }
