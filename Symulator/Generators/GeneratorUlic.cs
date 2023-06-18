@@ -6,7 +6,7 @@
         {
             string[] ulice =
             {
-                "Nowy Świat", "Marszałkowska", "Chmielna", "Kościuszki", "Piłsudskiego", "Piotrkowska", "Grunwaldzka",
+                "Plac Teatralny", "Nowy Świat", "Marszałkowska", "Chmielna", "Kościuszki", "Piłsudskiego", "Piotrkowska", "Grunwaldzka",
                 "Długa", "Świętokrzyska", "Monte Cassino", "Floriańska", "Aleja Niepodległości", "Krakowskie Przedmieście",
                 "Batorego", "Kazimierza Wielkiego", "Wita Stwosza", "Jana Pawła II", "Stary Rynek", "Chopina", "Mickiewicza"
             };

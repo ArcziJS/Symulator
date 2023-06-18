@@ -19,7 +19,7 @@ namespace Symulator.Inserters
             for (int i = 1; i <= rekordy; i++)
             {
                 int randomIdWyposazenie = random.Next(1, maxIdWyposazenie + 1);
-                int randomIdPojazdu = random.Next(1, maxIdPojazdy + 1);
+                int randomIdPojazdu = random.Next(1, maxIdPojazdy + 1 );
 
                 string query = "INSERT into \"pojazd-wyposazenie\" " +
                     "(pojazdy_id_pojazdu, wyposazenie_id_wyposazenia)" +
