@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Aplikacja
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private OracleConnection connection;
         private OracleCommand command;
@@ -14,7 +14,7 @@ namespace Aplikacja
 
 
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             connection = new OracleConnection(dsn);
